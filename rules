@@ -1,0 +1,61 @@
+[
+  {
+    "type": "field",
+    "outboundTag": "direct",
+    "protocol": [
+      "bittorrent"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "block",
+    "domain": [
+      "geosite:category-ads-all"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "proxy",
+    "domain": [
+      "full:www.icloud.com",
+      "domain:icloud-content.com"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:tld-cn",
+      "geosite:icloud",
+      "geosite:category-games@cn"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "proxy",
+    "domain": [
+      "geosite:geolocation-!cn"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "direct",
+    "domain": [
+      "geosite:cn",
+      "geosite:private"
+    ]
+  },
+  {
+    "type": "field",
+    "outboundTag": "direct",
+    "ip": [
+      "geoip:cn",
+      "geoip:private"
+    ]
+  },
+  {
+    "type": "field",
+    "port": "0-65535",
+    "outboundTag": "proxy"
+  }
+]
