@@ -18,24 +18,24 @@ if ($result -eq 1)
 }
 }
 
-if ($local -eq $latest)
+if ($local -lt $latest)
 {
   curl https://api.azzb.workers.dev/https://github.com/XTLS/Xray-core/releases/latest/download/Xray-windows-64.zip -O xray.zip
 }
 
-if ( $localver -eq $remotever )
+if ( $localver -lt $remotever )
 {
   curl https://api.azzb.workers.dev/https://github.com/2dust/v2rayN/releases/latest/download/v2rayN.zip -O v2rayn.zip
 }
 
-if ($local -eq $latest)
+if ($local -lt $latest)
 {
   .$kill
   Expand-Archive -Path .\xray.zip -DestinationPath .\tmp ; del xray.zip
   Move-Item -Force -Path .\tmp\xray.exe -Destination .
 }
 
-if ( $localver -eq $remotever )
+if ( $localver -lt $remotever )
 {
   .$kill
   Expand-Archive -Path .\v2rayn.zip -DestinationPath .\tmp ; del v2rayn.zip
