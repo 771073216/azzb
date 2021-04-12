@@ -50,8 +50,11 @@ function installcore
 	Move-Item -Force -Path .\tmp\xray.exe -Destination .
 }
 
+if (Test-Path .\tmp\) { Remove-Item -r .\tmp\ }
+if (Test-Path .\xray.zip) { Remove-Item xray.zip }
+if (Test-Path .\v2rayn.zip) { Remove-Item v2rayn.zip }
 if (Test-Path .\xray.exe) { update } else { installcore }
 
-Remove-Item -r -ErrorAction SilentlyContinue ./tmp/
+Remove-Item -r -ErrorAction SilentlyContinue .\tmp\
 curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
 curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
