@@ -29,7 +29,7 @@ function install
 function update
 {
 	$latest = (Invoke-RestMethod https://api.github.com/repos/XTLS/Xray-core/releases/latest | findstr tag_name).Split("v")[1]
-	$local = (.\xray.exe -Version).Split()[1]
+	$local = (.\xray.exe -version).Split()[1]
 	$remotever = (Invoke-RestMethod https://api.github.com/repos/2dust/v2rayN/releases/latest | findstr tag_name).Split(":")[1].trim()
 	$localver = (Get-Item .\v2rayN.exe).VersionInfo.FileVersion
 	if ($local -lt $latest)
