@@ -4,7 +4,7 @@ function killprocess
 	$Name = 'ProxyEnable'
 	$result = (Get-ItemProperty -Path "Registry::$Key").$Name
 	$process = (Get-Process -ErrorAction SilentlyContinue -Name v2rayn)
-	if ($process -ne $null) { Get-Process -ErrorAction SilentlyContinue -Name v2rayN | Stop-Process }
+	if ($process -ne $null) { Stop-Process -Name v2rayN }
 	if ($result -eq 1) { Set-ItemProperty -Path Registry::$Key -Name $Name -Value 0 }
 }
 
