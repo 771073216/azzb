@@ -50,11 +50,32 @@ function installcore
 	Move-Item -Force -Path .\tmp\xray.exe -Destination .
 }
 
+function getgeo
+{
+	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
+	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
+}
+
+function geofile
+{
+	$time = Get-Date -Format 'yyM'
+	if (Test-Path .\date.txt) {
+		$localtime = Get-Content .\date.txt
+		if ($time -ne $localtime) {
+			getgeo
+			$time > .\date.txt
+		}
+	}
+	else
+	{
+		getgeo
+		$time > .\date.txt
+	}
+}
+
 if (Test-Path .\tmp\) { Remove-Item -r .\tmp\ }
 if (Test-Path .\xray.zip) { Remove-Item xray.zip }
 if (Test-Path .\v2rayn.zip) { Remove-Item v2rayn.zip }
 if (Test-Path .\xray.exe) { update } else { installcore }
-
+geofile
 Remove-Item -r -ErrorAction SilentlyContinue .\tmp\
-curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
-curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
