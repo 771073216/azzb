@@ -8,74 +8,53 @@ function killprocess
 	if ($result -eq 1) { Set-ItemProperty -Path Registry::$Key -Name $Name -Value 0 }
 }
 
-function install
+if (!(Test-Path .\version))
 {
-	if (Test-Path .\xray.zip)
-	{
-		killprocess
-		Expand-Archive -Path .\xray.zip -DestinationPath .\tmp; Remove-Item xray.zip
-		Move-Item -Force -Path .\tmp\xray.exe -Destination .
-	}
-
-	if (Test-Path .\v2rayn.zip)
-	{
-		killprocess
-		Expand-Archive -Path .\v2rayn.zip -DestinationPath .\tmp; Remove-Item v2rayn.zip
-		Move-Item -Force -Path .\tmp\v2rayN\zh-Hans\* -Destination .\zh-Hans; Remove-Item .\tmp\v2rayN\zh-Hans
-		Move-Item -Force -Path .\tmp\v2rayN\* -Destination .
-	}
-}
-
-function update
-{
-	$latest = (Invoke-RestMethod https://api.github.com/repos/XTLS/Xray-core/releases/latest | findstr tag_name).Split("v")[1]
-	$local = (.\xray.exe -version).Split()[1]
-	$remotever = (Invoke-RestMethod https://api.github.com/repos/2dust/v2rayN/releases/latest | findstr tag_name).Split(":")[1].trim()
-	$localver = (Get-Item .\v2rayN.exe).VersionInfo.FileVersion
-	if ($local -lt $latest)
-	{
-		curl https://api.azzb.workers.dev/https://github.com/XTLS/Xray-core/releases/latest/download/Xray-windows-64.zip -O xray.zip
-	}
-	if ($localver -lt $remotever)
-	{
-		curl https://api.azzb.workers.dev/https://github.com/2dust/v2rayN/releases/latest/download/v2rayN.zip -O v2rayn.zip
-	}
-	install
-}
-
-function installcore
-{
-	curl https://api.azzb.workers.dev/https://github.com/XTLS/Xray-core/releases/latest/download/Xray-windows-64.zip -O xray.zip
-	Expand-Archive -Path .\xray.zip -DestinationPath .\tmp; Remove-Item xray.zip
-	Move-Item -Force -Path .\tmp\xray.exe -Destination .
-}
-
-function getgeo
-{
-	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
-	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
-}
-
-function geofile
-{
-	$time = Get-Date -Format 'yyM'
-	if (Test-Path .\date.txt) {
-		$localtime = Get-Content .\date.txt
-		if ($time -ne $localtime) {
-			getgeo
-			$time > .\date.txt
-		}
-	}
-	else
-	{
-		getgeo
-		$time > .\date.txt
-	}
+	"geo:0" > .\version
+	"xray:0" >> .\version
+	"v2rayn:0" >> .\version
 }
 
 if (Test-Path .\tmp\) { Remove-Item -r .\tmp\ }
 if (Test-Path .\xray.zip) { Remove-Item xray.zip }
 if (Test-Path .\v2rayn.zip) { Remove-Item v2rayn.zip }
-if (Test-Path .\xray.exe) { update } else { installcore }
-geofile
+
+$latest = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr xray).Split(":")[1].trim()
+$local = (Get-Content .\version | findstr xray).Split(':')[1]
+$remotever = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr v2rayn).Split(":")[1].trim()
+$localver = (Get-Content .\version | findstr v2rayn).Split(':')[1]
+$time = Get-Date -Format 'yyM'
+$localtime = (Get-Content .\version | findstr geo).Split(':')[1]
+
+if ($local -lt $latest)
+{
+	curl https://cdn.jsdelivr.net/gh/771073216/dist@main/xray-windows.zip -O xray.zip
+}
+if ($localver -lt $remotever)
+{
+	curl https://cdn.jsdelivr.net/gh/771073216/dist@main/v2rayn.zip -O v2rayn.zip
+}
+if ($time -ne $localtime)
+{
+	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
+	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
+}
+
+if (Test-Path .\xray.zip)
+{
+	killprocess
+	Expand-Archive -Path .\xray.zip -DestinationPath .\tmp; Remove-Item xray.zip
+	Move-Item -Force -Path .\tmp\xray.exe -Destination .
+}
+if (Test-Path .\v2rayn.zip)
+{
+	killprocess
+	Expand-Archive -Path .\v2rayn.zip -DestinationPath .\tmp; Remove-Item v2rayn.zip
+	Move-Item -Force -Path .\tmp\v2rayN\zh-Hans\* -Destination .\zh-Hans; Remove-Item .\tmp\v2rayN\zh-Hans
+	Move-Item -Force -Path .\tmp\v2rayN\* -Destination .
+}
+
+"geo:$time" > .\version
+"xray:$latest" >> .\version
+"v2rayn:$remotever" >> .\version
 Remove-Item -r -ErrorAction SilentlyContinue .\tmp\
