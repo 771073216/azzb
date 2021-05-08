@@ -19,22 +19,22 @@ if (Test-Path .\tmp\) { Remove-Item -r .\tmp\ }
 if (Test-Path .\xray.zip) { Remove-Item xray.zip }
 if (Test-Path .\v2rayn.zip) { Remove-Item v2rayn.zip }
 
-$latest = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr xray).Split(":")[1].trim()
-$local = (Get-Content .\version | findstr xray).Split(':')[1]
-$remotever = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr v2rayn).Split(":")[1].trim()
-$localver = (Get-Content .\version | findstr v2rayn).Split(':')[1]
-$time = Get-Date -Format 'yyM'
-$localtime = (Get-Content .\version | findstr geo).Split(':')[1]
+$xraylatest = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr xray).Split(":")[1].trim()
+$xraylocal = (Get-Content .\version | findstr xray).Split(':')[1]
+$guilatest = (Invoke-RestMethod https://cdn.jsdelivr.net/gh/771073216/dist@main/version | findstr v2rayn).Split(":")[1].trim()
+$guilocal = (Get-Content .\version | findstr v2rayn).Split(':')[1]
+$geotime = Get-Date -Format 'yyM'
+$geolocal = (Get-Content .\version | findstr geo).Split(':')[1]
 
-if ($local -lt $latest)
+if ($xraylocal -lt $xraylatest)
 {
 	curl https://cdn.jsdelivr.net/gh/771073216/dist@main/xray-windows.zip -O xray.zip
 }
-if ($localver -lt $remotever)
+if ($guilocal -lt $guilatest)
 {
 	curl https://cdn.jsdelivr.net/gh/771073216/dist@main/v2rayn.zip -O v2rayn.zip
 }
-if ($time -ne $localtime)
+if ($geotime -ne $geolocal)
 {
 	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat -O geoip.dat
 	curl https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat -O geosite.dat
@@ -54,7 +54,7 @@ if (Test-Path .\v2rayn.zip)
 	Move-Item -Force -Path .\tmp\v2rayN\* -Destination .
 }
 
-"geo:$time" > .\version
-"xray:$latest" >> .\version
-"v2rayn:$remotever" >> .\version
+"geo:$geotime" > .\version
+"xray:$xraylatest" >> .\version
+"v2rayn:$guilatest" >> .\version
 Remove-Item -r -ErrorAction SilentlyContinue .\tmp\
