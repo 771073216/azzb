@@ -9,9 +9,11 @@ function killprocess
 
 if (!(Test-Path .\version))
 {
-  "geo:0" > .\version
-  "xray:0" >> .\version
-  "v2rayn:0" >> .\version
+@"
+geo:0
+xray:0
+v2rayn:0
+"@ > .\version
 }
 
 if (Test-Path .\tmp\) { Remove-Item -Recurse .\tmp\ }
@@ -53,19 +55,17 @@ if (Test-Path .\v2rayn.zip)
   killprocess
   Expand-Archive .\v2rayn.zip .\tmp
   Remove-Item v2rayn.zip
-    if (Test-Path .\zh-Hans)
-    { 
-    Remove-Item -Recurse .\zh-Hans
-    Move-Item -Force .\tmp\v2rayN\zh-Hans\ .
-    }
+  if (Test-Path .\zh-Hans) {Remove-Item -Recurse .\zh-Hans }
   Move-Item -Force .\tmp\v2rayN\* .
 }
 
 if (Test-Path .\tmp\) {Remove-Item -Recurse .\tmp\ }
 
-"geo:$geotime" > .\version
-"xray:$xraylatest" >> .\version
-"v2rayn:$guilatest" >> .\version
+@"
+geo:$geotime
+xray:$xraylatest
+v2rayn:$guilatest
+"@ > .\version
 
 if (!(Test-Path .\guiNConfig.json))
 {
