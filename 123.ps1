@@ -29,11 +29,11 @@ $geotime = Get-Date -Format 'yyM'
 $geolocal = (Get-Content .\version | findstr geo).Split(':')[1]
 Remove-Item remote.txt
 
-if ($xraylocal -lt $xraylatest)
+if ($xraylocal -ne $xraylatest)
 {
   curl https://cdn.jsdelivr.net/gh/771073216/dist@main/windows/xray-windows.zip -O xray.zip
 }
-if ($guilocal -lt $guilatest)
+if ($guilocal -ne $guilatest)
 {
   curl https://cdn.jsdelivr.net/gh/771073216/dist@main/windows/v2rayn-v$guilatest.zip -O v2rayn.zip
 }
