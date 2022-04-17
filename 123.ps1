@@ -20,7 +20,7 @@ if (Test-Path .\tmp\) { Remove-Item -Recurse .\tmp\ }
 if (Test-Path .\xray.zip) { Remove-Item xray.zip }
 if (Test-Path .\v2rayn.zip) { Remove-Item v2rayn.zip }
 
-curl https://cdn.jsdelivr.net/gh/771073216/dist@main/version -O remote.txt
+curl https://gcore.jsdelivr.net/gh/771073216/dist@main/version -O remote.txt
 $xraylatest = (Get-Content .\remote.txt | findstr xray).Split(':')[1].trim()
 $xraylocal = (Get-Content .\version | findstr xray).Split(':')[1]
 $guilatest = (Get-Content .\remote.txt | findstr v2rayn).Split(':')[1].trim()
@@ -31,16 +31,16 @@ Remove-Item remote.txt
 
 if ($xraylocal -ne $xraylatest)
 {
-  curl https://cdn.jsdelivr.net/gh/771073216/dist@main/windows/xray-windows.zip -O xray.zip
+  curl https://gcore.jsdelivr.net/gh/771073216/dist@main/windows/xray-windows.zip -O xray.zip
 }
 if ($guilocal -ne $guilatest)
 {
-  curl https://cdn.jsdelivr.net/gh/771073216/dist@main/windows/v2rayn-v$guilatest.zip -O v2rayn.zip
+  curl https://gcore.jsdelivr.net/gh/771073216/dist@main/windows/v2rayn-v$guilatest.zip -O v2rayn.zip
 }
 if ($geotime -ne $geolocal)
 {
-  curl https://cdn.jsdelivr.net/gh/771073216/geofile@release/geoip.dat -O geoip.dat
-  curl https://cdn.jsdelivr.net/gh/771073216/geofile@release/geosite.dat -O geosite.dat
+  curl https://gcore.jsdelivr.net/gh/771073216/geofile@release/geoip.dat -O geoip.dat
+  curl https://gcore.jsdelivr.net/gh/771073216/geofile@release/geosite.dat -O geosite.dat
 }
 
 if (Test-Path .\xray.zip)
@@ -66,19 +66,3 @@ geo:$geotime
 xray:$xraylatest
 v2rayn:$guilatest
 "@ > .\version
-
-if (!(Test-Path .\guiNConfig.json))
-{
-  .\v2rayN.exe
-  sleep 1
-  killprocess
-  $conf = Get-Content .\guiNConfig.json
-  clear-content .\guiNConfig.json
-  foreach ($line in $conf)
-  {
-    $liner = $line -replace '"coreType": 0,','"coreType": 1,' `
-    -replace '"routingIndex": 0,','"routingIndex": 1,' `
-    -replace '"enableRoutingAdvanced": false,','"enableRoutingAdvanced": true,'
-    Add-content .\guiNConfig.json $liner
-  }
-}
