@@ -90,7 +90,7 @@
     <script>
         function toSubmit(e) {
             e.preventDefault()
-            window.open('https://api.azzb.workers.dev/' + document.getElementsByName('q')[0].value);
+            window.open('https://api.azzb.club/' + document.getElementsByName('q')[0].value);
             return false
         }
     </script>
