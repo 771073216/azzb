@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<HEAD>
+	<TITLE>Display Dimensions Calculator</TITLE>
+	<META http-equiv="content-type" content="text/html;charset=UTF-8">
+	<SCRIPT LANGUAGE="JavaScript">
+		<!-- hide the script contents from old browsers
+function ppiCalc(form) {
+var horizontal = form.horizontal.value;
+var vertical = form.vertical.value;
+var diagonal = form.diagonal.value;
+var ppi = form.ppi.value;
+var dotmm = form.dotmm.value;
+
+{
+ppi = (Math.sqrt((horizontal * horizontal) + (vertical * vertical))) / diagonal;
+form.ppi.value = Math.round((ppi) * 100) / 100;
+dotmm = (horizontal / ((Math.sqrt((horizontal * horizontal) + (vertical * vertical))) / (diagonal * 25.4))) / horizontal;
+form.dotmm.value = Math.round((dotmm) * 10000) / 10000;
+}
+
+}
+// done hiding -->
+	</SCRIPT>
+</HEAD>
+
+<BODY>
+	<H2>Display PPI (Pixels Per Inch) Calculator</H2>
+	<P>
+		Enter the number of pixels (e.g. horizontal 640, vertical 480) and the diagonal viewing area dimensions.
+	<P>
+	<form name="ppiCalculator" method=get>
+		<table border="0" cellpadding=5>
+			<tr>
+				<td align=right>Horizontal pixels:
+				<td align=center><input type=text name=horizontal size=8 value="" onFocus="select()" />
+			</tr>
+			<tr>
+				<td align=right>Vertical pixels:
+				<td align=center><input type=text name=vertical size=8 value="" onFocus="select()" />
+			</tr>
+			<tr>
+				<td align=right>Diagonal size (inches):
+				<td align=center><input type=text name=diagonal size=8 value="" onFocus="select()" />
+			</tr>
+			<tr>
+				<td colspan=2 align=right><input type=button value="Solve" onClick="ppiCalc(this.form)" />
+			</tr>
+			<tr>
+				<td align=right><b>PPI:</b></td>
+				<td align=center><input type=text name=ppi size=8 value="" readonly>
+					
+			</tr>
+			<tr>
+				<td align=right><b>Dot Pitch (mm):
+							
+				<td align=center><input type=text name=dotmm size=8 value="" readonly>
+					
+			</tr>
+		</table>
+	</form>
+</BODY>
+
+</HTML>
